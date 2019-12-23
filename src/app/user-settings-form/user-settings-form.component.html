@@ -1,20 +1,51 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <form fxLayout="column" fxLayoutAlign="center ceter">
+  <form
+    #form="ngForm"
+    fxLayout="column"
+    fxLayoutAlign="center ceter"
+    (ngSubmit)="onSubmit(form)"
+  >
     <mat-form-field>
-      <input matInput placeholder="Name" />
+      <input
+        matInput
+        name="name"
+        placeholder="Name"
+        [(ngModel)]="userSettings.name"
+        minlength="6"
+        required
+        #nameField="ngModel"
+      />
     </mat-form-field>
+    <mat-error *ngIf="nameField.hasError('required')">
+      Email is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="nameField.hasError('minlength')">
+      Minimum required length is 6 characters
+    </mat-error>
+    <br />
+    <!-- <h3>untouched: {{ propertyTest.untouched }}</h3>
+    <h3>touched: {{ propertyTest.touched }}</h3>
+    <h3>pristine: {{ propertyTest.pristine }}</h3>
+    <h3>dirty: {{ propertyTest.dirty }}</h3>
+    <h3>valid: {{ propertyTest.valid }}</h3>
+    <h3>invalid: {{ propertyTest.invalid }}</h3> -->
+    <br />
     <mat-checkbox
       class="example-margin"
-      [(ngModel)]="checked"
+      [(ngModel)]="userSettings.emailOffers"
       [(indeterminate)]="indeterminate"
       [labelPosition]="labelPosition"
       [disabled]="disabled"
-      name="checkboxField"
+      name="emailOffers"
     >
       Email Special Offers
     </mat-checkbox>
     <br />
-    <mat-button-toggle-group #group="matButtonToggleGroup">
+    <mat-button-toggle-group
+      #group="matButtonToggleGroup"
+      name="interfaceStyle"
+      [(ngModel)]="userSettings.interfaceStyle"
+    >
       <mat-button-toggle
         mat-button-flat
         color="primary"
@@ -43,7 +74,10 @@
     <br />
     <mat-form-field>
       <mat-label>Subscription Type</mat-label>
-      <mat-select>
+      <mat-select
+        name="subscriptionType"
+        [(ngModel)]="userSettings.subscriptionType"
+      >
         <mat-option *ngFor="let sub of subscriptions" [value]="sub.value">
           {{ sub.viewValue }}
         </mat-option>
@@ -51,13 +85,20 @@
     </mat-form-field>
     <br />
     <mat-form-field>
-      <textarea matInput placeholder="Notes"></textarea>
+      <textarea
+        matInput
+        name="notes"
+        [(ngModel)]="userSettings.notes"
+        placeholder="Notes"
+      ></textarea>
     </mat-form-field>
     <br />
-    <mat-form-field>
-      <input type="date" matInput />
+    <!-- <mat-form-field>
+      <input type="date" name="date" ngModel matInput />
     </mat-form-field>
-    <br />
+    <br /> -->
     <button mat-raised-button color="primary">Okay</button>
   </form>
 </div>
+<br /><br />
+{{ form.value | json }}
